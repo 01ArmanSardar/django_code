@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>this is a home page in app</h1>
+    <h2>Name : {{name}}</h2>
+    <h2>Age : {{age}}</h2>
+
+    <!-- conditional statement -->
+    <!-- nicher conditional sataement tah thik moto kaj korteche nah  -->
+
+    {% if age >= 20 %}
+    <h4>yes license</h4>
+    {% elif age >= 10 and age <= 19 %} <h4> no license </h4>
+        {% else %}
+        <h4>you are child</h4>
+        {% endif %}
+
+        <!-- for loop -->
+        {% for i in courses %}
+        <h3>{{i.id}} {{i.name}} {{i.fee}}</h3>
+
+        {% endfor %}
+
+        <!-- django template filtering  examle is below -->
+
+        <!-- join filter :The join filter is used to join the elements of a list with a string and outputs a string. It works like Python’s str.join(list) which returns a string created by joining the items of a list by the given string separator. -->
+        <h1>{{ lst | join:" - " }}</h1>
+
+        <!-- date filter : -->
+        <h3>{{ birthday | date:"D d M Y" }}</h3>
+
+        <!-- add filter : The add filter is used to add the argument to the value. This is useful for numeric data. Here’s the syntax to use the add filter: {{ value | add:"5" }}. If the value is 10, then the output will be 15. This filter is used to increment a variable in Django templates by adding a constant value to the variable.-->
+        <h3>{{ value | add:"5" }}</h3>
+
+        <!-- Capfirst Filter : The capfirst filter is used to capitalize the first character of the value. If the first character is not a letter, this filter has no effect. Here’s the syntax to use the capfirst filter: {{ value | capfirst }}. If the value is “earthly”, the output will be “Earthly”. -->
+        <h3>{{'christmas' | capfirst}}</h3>
+
+        <!-- CUT filter : The cut filter is used to remove all occurrences of the argument from the given string. The argument you pass to the filter will be removed from the value. Here’s the syntax to use the cut filter: {{ value | cut:" " }}. If the value is “String with spaces”, the output will be “Stringwithspaces”, the filter has cut out spaces from the value. -->
+        <h3>{{"Python is Fun" | cut:"is"}}</h3>
+
+        <!-- Dictsort Filter: The dictsort filter is used to sort a list of dictionaries and returns that list sorted by the key specified as the argument. Here’s the syntax to use the dictsort filter: {{ value | dictsort:"name" }} -->
+        
+        
+
+</html>
