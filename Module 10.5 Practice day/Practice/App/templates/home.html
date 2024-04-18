@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h3{
+            color:limegreen;
+            
+            font-weight: bold;
+            
+        }
+    </style>
+</head>
+
+<body>
+    <h1>this is PRacticeProject app homepage, here i code for django template filter</h1>
+    <hr>
+    <!-- join filter -->
+    <h3>join filter</h3>
+    
+    {{ list | join:" " }} <br>
+    <!-- date filter -->
+    <h3>date filter</h3>
+    {{ CurrentDate | date:"D d M Y" }} <br>
+    <h3>short date format</h3>
+    {{ CurrentDate|date:"SHORT_DATE_FORMAT" }} <br>
+    <h3>date format</h3>
+    {{ CurrentDate | date }} <br>
+
+    <!-- add filter -->
+    <h3>add filter </h3>
+    {{ intvalue | add:"9" }} <br>
+
+    <!-- Capfirst filter -->
+    <h3>Capfirst filter</h3>
+    {{ myCountry | capfirst }}
+
+    <!-- cut filter -->
+    <h3>cut filter</h3>
+    {{ details | cut:"good" }}
+
+    <!-- dicsort filter -->
+    <h3>Dicsort filter</h3>
+    {{ friends | dictsort:"name" }}
+
+    <!-- first filter -->
+    <h3>First Filter</h3>
+    {{ PlList | first }}
+
+    <!-- last filter -->
+    <h3>Last Filter</h3>
+    {{ PlList | last }}
+
+    <!-- Length Filter -->
+    <h3>Lentgh filter</h3>
+    {{ PlList | length }}
+
+    <!-- lower filter -->
+    <h3>Lower filter</h3>
+    {{ details | lower }}
+
+    <!-- Upper filter -->
+    <h3>Upper filter</h3>
+    {{ details | upper }}
+
+    <!-- Title Filter -->
+    <h3>Title Filter</h3>
+    {{ details | title }}
+
+    <!-- Random Filter -->
+    <h3>Random Filter</h3>
+    {{ PlList | random }}
+
+    <!-- Slice filter -->
+    <h3>Slice Filter</h3>
+    {{ PlList | slice:":3" }}
+
+    <!-- Time Filter -->
+    <h3>Time Filter</h3>
+    {{ CurrentTime | time:"H:i" }} <br>
+    {{ CurrentTime | time:"H\h i\m" }}
+
+    
+    {{ 2022-01-02T10:30:00.000123 | timesince }} 
+
+    <!-- Truncatechars Filter -->
+    <h3>Truncatchers Filter</h3>
+    {{ details | truncatechars:12 }}
+
+</body>
+
+</html>
