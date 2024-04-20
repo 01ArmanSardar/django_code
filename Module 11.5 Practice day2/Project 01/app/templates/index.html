@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="mealContainer row p-5" style="gap: 1%; ">
+    {% for i in MealData %}
+    <div class="card col-lg-3" style="width: 18rem; margin-top: 2%;">
+
+        <img src="{{i.strMealThumb}}" class="card-img-top" alt="MealPic">
+
+        <div class="card-body">
+            <h5 class="card-title">{{i.strMeal}}</h5>
+            <p class="card-text">Food, in the end, in our own tradition, is something holy. It's not about nutrients and calories. It's about sharing. It's about honesty. It's about identity."</p>
+            <a href="#" class="btn btn-primary">Order Now</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
