@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="width: 50%; height: 500px; margin: auto;" class="pt-5">
+    <h3 style="text-align: center;">Movie Ratting form</h3>
+    <form method="post" action="/Form/about/">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="exampleInputName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="exampleInputName" aria-describedby="nameHelp" name="username">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputemail" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="exampleInputemail" aria-describedby="emailHelp"
+                name="useremail">
+        </div>
+        <select class="form-select" aria-label="Default select example" name="select">
+            <option selected>Rating this movie</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="2">4</option>
+            <option value="3">5</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<h1>Name {{name}} </h1>
+<h2>Email {{email}}</h2>
+{% endblock %}
