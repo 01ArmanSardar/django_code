@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>djangoForm Practice Below</h1>
+
+{% load crispy_forms_tags %}
+<form action="" style="width: 50%;height: 500PX; margin: auto;" class=pt-5>
+    {% csrf_token %}
+    {{ formData | crispy }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+{% endblock content %}
