@@ -19,7 +19,7 @@
         {% for data in musicData %}
         <tr>
             <td>{{data.id}}</td>
-            <td>{{data.Musician.FirstName}} {{data.Musician.LastName}}</td>
+            <td><a href="{% url 'editmusucian' data.id %}" >{{data.Musician.FirstName}} {{data.Musician.LastName}}</a></td>
             <td>{{data.Musician.email}}</td>
             <td>{{data.RatingNow}}</td>
             <td>{{data.Musician.instrument_type}}</td>
