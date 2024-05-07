@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>this is musician directory</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Musician name</th>
+            <th scope="col">email</th>
+            <th scope="col">album rating</th>
+            <th scope="col">Instrument type</th>
+            <th scope="col">Album name</th>
+            <th scope="col">Relase Date</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in musicData %}
+        <tr>
+            <td>{{data.id}}</td>
+            <td>{{data.Musician.FirstName}} {{data.Musician.LastName}}</td>
+            <td>{{data.Musician.email}}</td>
+            <td>{{data.RatingNow}}</td>
+            <td>{{data.Musician.instrument_type}}</td>
+            <td>{{data.AlbumName}}</td>
+            <td>{{ data.albumRelaseData }}</td>
+            <td>
+                <a href="{% url 'edit_table' data.id %}" class="btn btn-info btn-small">Edit</a>
+                <a href="{% url 'delete_table' data.id %}" class="btn btn-info btn-small">delete</a>
+            </td>
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
