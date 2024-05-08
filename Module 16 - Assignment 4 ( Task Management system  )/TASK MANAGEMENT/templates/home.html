@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>this is show task page</h1>
+
+
+<!-- <div class="d-flex flex-wrap justify-content-center px-5 pt-5"></div> -->
+
+<div class="d-flex flex-wrap justify-content-center p-1">
+    {% for data in showData %}
+    <div class="card mx-1">
+        <div class="card-body">
+            <h6>id: {{data.id}}</h6>
+            <h5 class="card-title">AssignDate: {% for inner in data.Tasks.all %}
+                {{inner.AssignDate}}
+                {% endfor %}</h5>
+            <h6 class="card-description">Description: {% for inner in data.Tasks.all %}
+                {{inner.Description}}
+                {% endfor %}</h6>
+            <h5>Category: {{data.Categoryname}}</h5>
+        {% for inner in data.Tasks.all %}
+
+            {% if inner.is_completed == True%}
+            <h3 >completed</h3>
+        
+            {% else %}
+            <a href=" {% url 'editTask' data.id %}" class="btn btn-primary">edit</a>
+            <a href="{% url 'deleteTask' data.id %}" class="btn btn-primary">delete</a>
+            {% endif %}
+        {% endfor %}
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- </div> -->
+{% endblock %}
