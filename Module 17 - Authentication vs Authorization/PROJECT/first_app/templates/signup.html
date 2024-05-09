@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+{% if messages %}
+{% for m in messages %}
+<small {% if m.tags %} class="{{m.tags}}" {%endif%}>{{m}}</small>
+{% endfor %}
+{% endif %}
+
+
+
+<form method="post" style="width: 50%; height: 500px; margin: auto;" novalidate>
+    {% csrf_token %}
+<h1 class="p-5">signUp Page</h1>
+    <!-- {{Rdform | crispy}} -->
+
+    <!-- form er help text gulu badh deor jonno nicher kaj gulu korteh hobhe -->
+
+    {% for fm in Rdform %}
+    {{fm.label_tag}}
+    {{fm}}
+    {{fm.errors|striptags }}
+    {% endfor %}
+    <br>
+    <button class="btn btn-warning mt-3" type="submit">Submit</button>
+    <br>
+    <small>Already have a account <a href="{% url 'login' %}">LogIn</a>  </small>
+</form>
+{% endblock %}
