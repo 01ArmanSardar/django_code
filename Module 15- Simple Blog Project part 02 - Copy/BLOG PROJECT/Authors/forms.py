@@ -1,6 +1,16 @@
 from django import forms
-from .models import Author
-class AuthorForm(forms.ModelForm):
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+
+class registrationForm(UserCreationForm):
+    first_name=forms.CharField(widget=forms.TextInput(attrs={'id':'required'}))
+    last_name=forms.CharField(widget=forms.TextInput(attrs={'id':'required'}))
     class Meta:
-        model = Author
-        fields= '__all__'
+        model=User
+        fields=['username','first_name','last_name','email']
+
+
+# class AuthorForm(forms.ModelForm):
+#     class Meta:
+#         model = Author
+#         fields= '__all__'
