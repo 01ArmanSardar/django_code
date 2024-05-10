@@ -22,5 +22,6 @@ urlpatterns = [
     path('author/',include('Authors.urls')),
     path('categorie/',include('categories.urls')),
     path('post/',include('posts.urls')),
-    path('',views.home,name='homepage')
+    path('',views.home,name='homepage'),
+    path('category/<slug:category_slug>',views.home,name='category_wise_post')
 ]
