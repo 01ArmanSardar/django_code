@@ -2,8 +2,9 @@ from django.shortcuts import render ,redirect
 from . import forms 
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate,login,update_session_auth_hash
+from django.contrib.auth import authenticate,login,update_session_auth_hash ,logout
 from django.contrib import messages
+from posts.models import Post
 # Create your views here.
 
 def register(request):
@@ -39,7 +40,8 @@ def user_login(request):
 
 @login_required
 def profile(request):
-    return render(request,'profile.html')
+    data=Post.objects.filter(author=request.user)
+    return render(request,'profile.html',{'data':data})
 
 
 @login_required
@@ -68,4 +70,6 @@ def passChange(request):
     return render(request,'passChange.html',{'form_data':passchange_form})
 
 
-
+def user_logout(request):
+    logout(request)
+    return redirect('login')
