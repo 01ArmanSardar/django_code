@@ -6,6 +6,8 @@ def add_post(request):
     if request.method == 'POST':
         add_form=form.add_psot(request.POST)
         if add_form.is_valid():
+            # add_form.cleaned_data['author'] =request.user
+            add_form.instance.author=request.user
             add_form.save()
             return redirect('homepage')
     else:
