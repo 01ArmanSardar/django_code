@@ -7,6 +7,7 @@ class Post(models.Model):
     content=models.TextField()
     category=models.ManyToManyField(Category)  # ekta post multiple categorir moddeh thakteh pare abar akta categorir moddeh multiple post takte pareh
     author=models.ForeignKey(User,on_delete=models.CASCADE)
+    image=models.ImageField(upload_to='posts/media/uploads/',blank=True,null=True) #global media file holeh upload_to='uploads/',
 
     def __str__(self):
         return f'{self.title}'
