@@ -3,7 +3,7 @@ from . import form
 from django.urls import reverse_lazy
 from . import models
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView
+from django.views.generic import CreateView,UpdateView,DeleteView
 
 # Create your views here.
 @login_required
@@ -19,7 +19,7 @@ def add_post(request):
          add_form=form.add_psot()
     return render(request,'add_post.html',{'form':add_form})
 
-# add_post using  in class Based View
+# add_post using  class Based View
 class AddpostVIew(CreateView):
     model=models.Post
     form_class=form.add_psot
@@ -44,9 +44,24 @@ def edit_post(request,id):
             return redirect('homepage')
     return render(request,'add_post.html',{'form_data':add_form})
 
+# edit_post view using Classed base view
+class EditPostView(UpdateView):
+    model=models.Post
+    form_class=form.add_psot
+    template_name='add_post.html'
+    pk_url_kwarg='id'
+    success_url=reverse_lazy('homepage')
+
 
 @login_required
 def delete_post(request,id):
     post=models.Post.objects.get(pk=id)
     post.delete()
     return redirect('homepage')
+
+# delete_post view using classed base view
+class DeletePostView(DeleteView):
+    model =models.Post
+    template_name='delete.html'
+    success_url=reverse_lazy('homepage')
+    pk_url_kwarg='id'
