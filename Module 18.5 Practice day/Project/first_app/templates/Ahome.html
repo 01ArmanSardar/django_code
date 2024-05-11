@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>this is appHome page</h1>
+{% load crispy_forms_tags %}
+
+<form method="post">
+    {% csrf_token %}
+    {% for m in message %}
+<h1 class="text-info">{{m}}</h1>
+
+{% endfor %}
+    {{form | crispy}}
+    <button class="btn btn-info" type="submit">Submit</button>
+</form>
+
+{% endblock content %}
