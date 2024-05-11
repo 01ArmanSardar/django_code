@@ -1,7 +1,9 @@
 from django.shortcuts import render ,redirect
 from . import form
+from django.urls import reverse_lazy
 from . import models
 from django.contrib.auth.decorators import login_required
+from django.views.generic import CreateView
 
 # Create your views here.
 @login_required
@@ -15,7 +17,18 @@ def add_post(request):
             return redirect('homepage')
     else:
          add_form=form.add_psot()
-    return render(request,'add_post.html',{'form_data':add_form})
+    return render(request,'add_post.html',{'form':add_form})
+
+# add_post using  in class Based View
+class AddpostVIew(CreateView):
+    model=models.Post
+    form_class=form.add_psot
+    template_name= 'add_post.html'
+    success_url=reverse_lazy('homepage')
+    def form_valid(self,form):
+        form.instance.author=self.request.user
+        return super().form_valid(form)
+
 
 # edit post
 @login_required
