@@ -27,11 +27,16 @@
         <div class="d-flex flex-wrap  px-5 ">
             {% for post in data %}
             <div class="col-sm-3 p-3">
-                <div class="card">
+                <div class="card" style="transform: rotate(3deg); position: relative;
+                animation: mymove 5s infinite; @keyframes mymove {
+  from {top: 0px;}
+  to {top: 200px;}
+}">
                     <div class="card-body">
                         <img src="{{post.image.url}}" class="card-img-top" alt="image">
-                        <h5 class="card-title">{{post.title}}</h5>
-                        <p class="card-text">{{post.content}}</p>
+                        <h5 class="card-title"><a href="{% url 'details' post.id %}"
+                                style="text-decoration: none ;color: black;">{{post.title}}</a></h5>
+                        <p class="card-text">{{post.content | truncatewords:10}}</p>
                         <p class="author name" style="font-weight: 600;">Author: {{post.author.first_name}}
                             {{post.author.last_name}}<i class="material-icons"
                                 style="font-size: small;color: deepskyblue;">check_circle</i></p>
@@ -49,5 +54,10 @@
     </div>
 
 </div>
+
+<form action="">
+    {{form}}
+
+</form>
 
 {% endblock content %}

@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from . import models
 from  django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView,UpdateView,DeleteView
+from django.views.generic import CreateView,UpdateView,DeleteView,DetailView
 
 # Create your views here.
 @login_required
@@ -69,3 +69,35 @@ class DeletePostView(DeleteView):
     template_name='delete.html'
     success_url=reverse_lazy('homepage')
     pk_url_kwarg='id'
+
+
+# using classed view for see our blog details in separate page
+
+class BlogDetailsView(DetailView):
+    model=models.Post
+    template_name='details.html'
+    pk_url_kwarg='id'
+
+    def post(self,request,*args,**kargs):
+        comment_form=form.ComentForm(data=self.request.POST)
+        post=self.get_object()
+        if comment_form.is_valid():
+            new_comment=comment_form.save(commit=False)
+            new_comment.post=post
+            new_comment.save()
+        return self.get(request,*args,**kargs)
+    
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        post = self.object #post model er object ekhnae store korlam
+        comments = post.comments.all()
+        # if self.request.method == 'POST':
+            # comment_form=form.ComentForm(data=self.request.POST)
+            # if comment_form.is_valid():
+            #     new_comment=comment_form.save(commit=False)
+            #     new_comment.post=post
+            #     new_comment.save()
+        comment_form=form.ComentForm()
+        context['comments'] = comments
+        context['comment_form'] = comment_form
+        return context
