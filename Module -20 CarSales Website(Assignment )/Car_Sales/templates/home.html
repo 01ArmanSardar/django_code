@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-this is car house
+<h1>this is car house</h1>
+
+{% for car in Cardata %}
+<div class="card" style="width: 18rem;">
+    <img src="{{car.image.url}}" class="card-img-top" alt="carImage">
+    <div class="card-body">
+    <h4 class="card-title">{{car.name}}</h4>
+      <h5>{{car.price}}</h5>
+      
+      <a href="#" class="btn btn-primary">view Details</a>
+    </div>
+  </div>
+{% endfor %}
 {% endblock content %}
