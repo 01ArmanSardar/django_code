@@ -5,6 +5,8 @@ from car.models import car
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate ,login,logout,update_session_auth_hash
+from django.contrib.auth.views import LogoutView
+from django.urls import reverse_lazy
 # Create your views here.
 def user(request):
     return render(request,'user.html')
@@ -38,6 +40,23 @@ def userLogin(request):
     return render(request,'user.html',{'form':form, 'type':'login'})
 
 
-def Car(request):
-    carobject=car.objects.get(pk=id)
-    return render (request,'home.html',{'cardata':carobject})
+def userLogout(request):
+    logout(request)
+    return redirect('login')
+# class userLogoutView(LogoutView):
+#     template_name='logout.html'
+#     # def get_success_url(self):
+#     reverse_lazy('login')
+
+# def Car(request):
+#     carobject=car.objects.get(pk=id)
+#     return render (request,'home.html',{'cardata':carobject})
+
+
+def editProfile(request):
+    if request.method=='POST':
+        profile_form=form.Changeuserform(request.POST,instance=request.user)
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request,'profile updated Succesfully')
+            return redirect('carpage')

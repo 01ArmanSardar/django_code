@@ -1,17 +1,30 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
-<h1>this is car house</h1>
+<div class="container row" style="margin: auto;">
+  <div class="car_text col-lg-6">
+    <h3>Welcome to CarHouse! Discover your dream car with us. We offer a wide selection of new and used vehicles, expert
+      reviews, and the best deals in town. Start your car journey with CarHouse today</h3>
+  </div>
+  <div class="car_image col-lg-6"><img style="width:90%;" src="{% static 'car_Image.jpg' %}" alt="car_image"></div>
 
-{% for car in Cardata %}
-<div class="card" style="width: 18rem;">
-    <img src="{{car.image.url}}" class="card-img-top" alt="carImage">
+</div>
+{% for brand in Brandname %}
+<button> <a href="url 'brand_wise_car' brand.slug">{{brand.Name}}</a> </button>
+{% endfor %}
+<div class="row container">
+  {% for car in Cardata %}
+  <div class="card col-lg-4" style="width: 18rem; margin:auto;">
+    <img src="{{car.image.url}}" class="card-img-top " alt="carImage" style="object-fit: contain;">
     <div class="card-body">
-    <h4 class="card-title">{{car.name}}</h4>
-      <h5>{{car.price}}</h5>
-      
-      <a href="#" class="btn btn-primary">view Details</a>
+      <h4 class="card-title" style="font-style: italic;">{{car.name}}</h4>
+      <h6>{{car.price}}</h6>
+      <h3>
+        {{car.brnadName.Name}}
+      </h3>
+      <a href="{% url 'details' car.id %}" class="btn btn-primary">view Details</a>
     </div>
   </div>
-{% endfor %}
+  {% endfor %}
+</div>
 {% endblock content %}

@@ -24,6 +24,7 @@ urlpatterns = [
     path('',views.home,name='homepage'),
     path('car/',include('car.urls')),
     path('brand/',include('brand.urls')),
+    path('brands/<slug:carbrand_slug>/',views.home,name='brand_wise_car'),
     path('user/',include('user.urls')),
     # path('cars/',views.Cars,name='car-page')
 ]
