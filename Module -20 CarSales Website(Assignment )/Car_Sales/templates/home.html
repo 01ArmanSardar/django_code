@@ -9,8 +9,9 @@
   <div class="car_image col-lg-6"><img style="width:90%;" src="{% static 'car_Image.jpg' %}" alt="car_image"></div>
 
 </div>
-{% for brand in Brandname %}
-<button> <a href="url 'brand_wise_car' brand.slug">{{brand.Name}}</a> </button>
+
+{% for br in brand %}
+<button> <a href="{% url 'brandWiseCar' br.slug %}">{{br.Name}}</a> </button>
 {% endfor %}
 <div class="row container">
   {% for car in Cardata %}

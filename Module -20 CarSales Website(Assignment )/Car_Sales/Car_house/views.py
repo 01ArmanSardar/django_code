@@ -4,13 +4,14 @@ from brand.models import Carbrand
 
 def home(request,carbrand_slug=None):
     Carobject=car.objects.all()
-    brandName=Carbrand.objects.all()
+    # brandName=Carbrand.objects.all()
     if carbrand_slug is not None:
         # brandName=Carbrand.objects.filter(slug=carbrand_slug)
-        Carobject=car.objects.filter(brandName=brandName)
-    print(brandName)
+        brnadName=Carbrand.objects.get(slug=carbrand_slug)
+        Carobject=car.objects.filter(brnadName=brnadName)
+    BrandName=Carbrand.objects.all()
     
-    return render (request,'home.html',{'Cardata':Carobject,})
+    return render (request,'home.html',{'Cardata':Carobject, 'brand':BrandName})
 
 
 def Brand(request,carbrand_slug=None):
