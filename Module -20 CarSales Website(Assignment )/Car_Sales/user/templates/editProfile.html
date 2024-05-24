@@ -2,11 +2,14 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+<h1>This is Profile Page</h1>
+<br> <br><br><br>
+<h5>Edit your Profile in Below form</h5>
 <form action="" style="width: 50%;height: 300px;margin: auto;" method="post">
 {% csrf_token %}
-<h1>profile edit page</h1>
 
-
+{{form|crispy}}
+<button type="submit" style="background-color: chartreuse; margin-bottom: 30px;">Submit</button>
 </form>
 
 {% endblock content %}

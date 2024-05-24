@@ -12,7 +12,7 @@ class car(models.Model):
     
 
 class Comment(models.Model):
-    car=models.ForeignKey(car,on_delete=models.CASCADE,related_name='comments')
+    cars=models.ForeignKey(car,on_delete=models.CASCADE,related_name='comments')
     name=models.CharField(max_length=50)
     email=models.EmailField()
     content=models.TextField()

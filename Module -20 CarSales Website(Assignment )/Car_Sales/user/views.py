@@ -52,8 +52,8 @@ def userLogout(request):
 #     carobject=car.objects.get(pk=id)
 #     return render (request,'home.html',{'cardata':carobject})
 
-def Profile(request):
-    data=Post.objects.filter(author=request.user)
+# def Profile(request):
+#     data=Post.objects.filter(author=request.user)
 
 def editProfile(request):
     if request.method=='POST':
@@ -61,7 +61,7 @@ def editProfile(request):
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request,'profile updated Succesfully')
-            return redirect('carpage')
+            return redirect('homepage')
     else:
         profile_form=form.Changeuserform(instance=request.user)
     return render (request,'editProfile.html',{'form':profile_form})
