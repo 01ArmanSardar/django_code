@@ -20,10 +20,14 @@ def user_login(request):
     if request.method=='POST':
         form=Login(request.POST)
         if form.is_valid():
-            messages.success(request,'login Succesfully')
+
             user=authenticate(request,username=request.POST['username'],password=request.POST['password'])
+            print(user)
             if user is not None:
+                
+                messages.success(request,'login Succesfully')
                 login(request,user)
+                
                 return redirect('homepage')
     else:
         form=Login()
@@ -34,7 +38,9 @@ def profile(request):
 
 
 def UserLogout(request):
+    messages.success(request,'logout Succesfully')
     logout(request)
     return redirect('login')
     # return render(request,'profile.html')
 
+# 12345678pa

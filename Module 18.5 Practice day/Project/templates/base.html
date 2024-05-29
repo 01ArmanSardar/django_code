@@ -42,7 +42,9 @@
       </div>
     </div>
   </nav>
-
+  {% for m in messages %}
+  <h6 class="text-info">{{m}}</h6>
+  {% endfor %}
 
   {% block content %}
   {% endblock content %}

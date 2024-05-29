@@ -5,10 +5,6 @@
 
 <form method="post">
     {% csrf_token %}
-    {% for m in message %}
-<h1 class="text-info">{{m}}</h1>
-
-{% endfor %}
     {{form | crispy}}
     <button class="btn btn-info" type="submit">Submit</button>
 </form>
