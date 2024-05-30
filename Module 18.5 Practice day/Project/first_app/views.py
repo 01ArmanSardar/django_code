@@ -1,7 +1,8 @@
 from django.shortcuts import render ,redirect
 from .forms import SignupForm,Login
 from django.contrib import messages
-from django.contrib.auth import login,authenticate,logout
+from django.contrib.auth import login,authenticate,logout,update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 # Create your views here.
 def home(request):
     return render(request,'Ahome.html')
@@ -44,3 +45,15 @@ def UserLogout(request):
     # return render(request,'profile.html')
 
 # 12345678pa
+
+def passChange(request):
+    if request.method == 'POST':
+        passchange_form=PasswordChangeForm(request.user,data=request.POST)
+        if passchange_form.is_valid():
+            passchange_form.save()
+            messages.success(request,'password updated successfully')
+            update_session_auth_hash(request,passchange_form.user)
+            return redirect('profile')
+    else:
+        passchange_form=PasswordChangeForm(user=request.user)
+    return render(request,'passChange.html',{'form_data':passchange_form})
