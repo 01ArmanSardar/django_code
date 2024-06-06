@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import FormView
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm,UserUpdateForm
 from django.contrib.auth import login,logout
 from django.urls import reverse_lazy
+from django.views import View
 from django.contrib.auth.views import LogoutView,LoginView
 # Create your views here.
 
@@ -26,3 +27,18 @@ class UserLogout(LogoutView):
         if self.request.user.is_authenticated:
             logout(self.request)
         return reverse_lazy('homepage')
+    
+
+class UserBankAccountUpdateView(View):
+    template_name = 'profile.html'
+    # def get_success_url(self):
+    #     return reverse_lazy('homepage')
+
+    def get(self, request):
+        form = UserUpdateForm(instance=request.user)
+        return render(request, self.template_name, {'form': form})
+    def post(self, request):
+        form = UserUpdateForm(request.POST,instance=request.user)
+        if form.is_valid():
+            form.save()
+            return render(request, self.template_name, {'form': form})
