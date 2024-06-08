@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-center px-5">
+    {% if data %}
+    {% for post in data %}
+    <br>
+    <div class="col-sm-3 p-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{post.title}}</h5>
+                <p class="card-text">{{post.content}}</p>
+                <p class="author name">Author: {{post.author.first_name}} {{post.author.last_name}}</p>
+                <p>Category: {% for cat in post.category.all %}
+                    <button class="btn btn-primary btn-sm m-2" disabled>{{cat.name}}</button>
+                    {% endfor %}
+                </p>
+                <a href="{% url 'edit_post' post.id %}" class="btn btn-info">Edit</a>
+                <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">delete</a>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <h1 class="text-danger" style="margin-top: 210px; margin-left: 150px;"><strong>Sorry</strong>  You have No Blog  </h1> <br>
+    <h6 style="margin-top: 250px;">click <a href="{% url 'add_post' %}">Wright Blog</a> for create a blog</h6>
+    {% endif %}
+</div>
+<div>
+    <a href="{% url 'editProfile' %}" class="btn btn-primary" style="margin-top: -500px; margin-left: 50px;"> Edit your Profile</a>
+</div>
+{% endblock content %}

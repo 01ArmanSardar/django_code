@@ -131,7 +131,7 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/mediaS/'
 
 # Path where media is stored'
-# MEDIA_ROOT = BASE_DIR / 'media'
+# MEDIA_ROOT = BASE_DIR / 'mediaU'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

@@ -25,10 +25,11 @@
               <li class="nav-item">
                 <a class="nav-link text-light" href="{% url 'albumPage' %}">album</a>
               </li>
-              {% endif %}
+              
               <li>
                 <a class="nav-link text-light" href="{% url 'logout' %}">logout</a>
               </li>
+              {% endif %}
             </ul>
             <div class="d-flex" style="gap: 10px;">
               <div><a class="btn btn primary bg-warning" href="{% url 'signUpForm' %}">SignUp</a></div>

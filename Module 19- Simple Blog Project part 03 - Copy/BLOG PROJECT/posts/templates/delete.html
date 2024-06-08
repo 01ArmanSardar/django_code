@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<form action="" style="width: 50%; height: 300px; margin: auto; padding: 20px 10px;" method="post">
+    {% csrf_token %}
+    <h1>are your sure delete your post </h1>
+    <h6><strong>NOTE:</strong> deleted post not return back</h6>
+<button type="submit" style="background-color: yellow; border: none;border-radius: 4px;" >delete</button>
+</form>
+
+{% endblock content %}
