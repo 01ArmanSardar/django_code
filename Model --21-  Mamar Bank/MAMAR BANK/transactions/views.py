@@ -1,5 +1,5 @@
 from django.shortcuts import render,HttpResponse
-from django.views.generic import CreateView
+from django.views.generic import CreateView,ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Transaction
 from .forms import DepositForm,WithdrawForm,LoanRequestForm
@@ -84,3 +84,5 @@ class LoanRequestView(TransactionCreateMixin):
             return HttpResponse("you have crossed your limits")
         messages(self.request,f'loan request for{amount} was succesfully sent in admin')
         return super().form_valid(form)
+
+
