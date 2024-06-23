@@ -6,13 +6,15 @@ from .forms import DepositForm,WithdrawForm,LoanRequestForm
 from django.contrib import messages
 from .constants import DEPOSIT,WITHDRAWL,LOAN,LOAN_PAID
 from datetime import datetime
+from django.urls import reverse_lazy
+from django.db.models import Sum
 # Create your views here.
 
 class TransactionCreateMixin(LoginRequiredMixin,CreateView):
-    template_name=''
+    template_name='transaction_form.html'
     model=Transaction
     title=''
-    success_url=''
+    success_url=reverse_lazy('Transaction_report')
 
     def get_form_kwargs(self):
         kwargs=super().get_form_kwargs()
@@ -29,6 +31,7 @@ class TransactionCreateMixin(LoginRequiredMixin,CreateView):
               'title'  :self.title
             }
         )
+        return context
 
 class DepositMoneyView(TransactionCreateMixin):
     form_class=DepositForm
@@ -45,7 +48,7 @@ class DepositMoneyView(TransactionCreateMixin):
         account.save(
             update_fields=['balance']
         )
-        messages(self.request,f'{amount} was deposited to your account')
+        messages.success(self.request,f'{amount} was deposited to your account')
         return super().form_valid(form)
     
 
@@ -64,7 +67,7 @@ class WithdrawMoneyView(TransactionCreateMixin):
         account.save(
             update_fields=['balance']
         )
-        messages(self.request,f'{amount} was withdraw to your account')
+        messages.warning(self.request,f'{amount} was withdraw to your account')
         return super().form_valid(form)
     
 
@@ -72,7 +75,7 @@ class WithdrawMoneyView(TransactionCreateMixin):
 
 class LoanRequestView(TransactionCreateMixin):
     form_class=LoanRequestForm
-    title="Request for Loan"
+    title="Request For Loan"
 
     def get_initial(self):
         inital={'transaction_type':LOAN}
@@ -83,14 +86,15 @@ class LoanRequestView(TransactionCreateMixin):
         current_loan_count=Transaction.objects.filter(account=self.request.user.account,transaction_type=3,loan_approve=True).count()
         if current_loan_count >=3:
             return HttpResponse("you have crossed your limits")
-        messages(self.request,f'loan request for{amount} was succesfully sent in admin')
+        messages.success(self.request,f'loan request for{amount} was succesfully sent in admin')
         return super().form_valid(form)
 
 
 class TransactionReportView(LoginRequiredMixin,ListView):
-    template_name=""
+    template_name="transaction_report.html"
     model=Transaction
     balance=0
+    context_object_name="Report_list"
 
     def get_queryset(self):
         # jodi user kono type filter na kore taile tar total transaction report dekabo
@@ -101,10 +105,10 @@ class TransactionReportView(LoginRequiredMixin,ListView):
         end_date_str=self.request.GET.get('end_date')
 
         if start_date_str and end_date_str:
-            start_date=datetime.strptime(start_date_str,"%y-%m-%d").date()
-            end_date=datetime.strptime(end_date_str,"%y-%m-%d").date()
-            # queryset=queryset.filter(timestamp_date_gte=start_date,timestamp_date_lte=end_date)
-            self.balance=Transaction.objects.filter(timestamp_date_gte=start_date,timestamp_date_lte=end_date).aggregate(sum('amount'))['amount__sum']
+            start_date=datetime.strptime(start_date_str,"%Y-%m-%d").date()
+            end_date=datetime.strptime(end_date_str,"%Y-%m-%d").date()
+            queryset=queryset.filter(timestamp__date__gte=start_date,timestamp__date__lte=end_date)
+            self.balance=Transaction.objects.filter(timestamp__date__gte=start_date,timestamp__date__lte=end_date).aggregate(Sum('amount'))['amount__sum']
         
         else:
             self.balance=self.request.user.account.balance
@@ -131,15 +135,15 @@ class PayLoanView(LoginRequiredMixin,View):
                 user_account.save()
                 loan.transaction_type=LOAN_PAID
                 loan.save()
-                return redirect()
+                return redirect('loan_list')
             else:
                 messages.error(self.request,f'loan amount is greater than avilable Balance')
-                return redirect()
+                return redirect('loan_list')
             
 
 class LoanListView(LoginRequiredMixin,ListView):
     model=Transaction
-    template_name=""
+    template_name="loan_request.html"
     context_object_name="loans"
     def get_queryset(self):
         user_account=self.request.user.account

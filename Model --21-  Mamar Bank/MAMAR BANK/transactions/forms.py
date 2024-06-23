@@ -8,7 +8,7 @@ class TransactionForm(forms.ModelForm):
 
     def __init__(self,*args,**kwargs):
         self.account=kwargs.pop('acount')
-        super.__init__(*args,**kwargs)
+        super().__init__(*args,**kwargs)
         self.fields['transaction_type'].disabled=True #ei feild disable takbhe
         self.fields['transaction_type'].widget=forms.HiddenInput() # user tekeh hide korah takbhe
 
@@ -48,8 +48,7 @@ class WithdrawForm(TransactionForm):
             )
         if Amount>balance:
             raise forms.ValidationError(
-                f'you balance is {balance},
-                you can not withdraw more than your account balance'
+                f"you balance is {balance}you can not withdraw more than your account balance"
             )
         return Amount
         
