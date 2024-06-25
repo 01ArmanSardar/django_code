@@ -11,6 +11,7 @@ class UserBankAccount(models.Model):
     gender=models.CharField(max_length=10,choices=GENDER_TYPE)
     Initial_deposite_date=models.DateField(auto_now_add=True)
     balance=models.DecimalField(default=0,max_digits=10,decimal_places=2)
+    isBankRupt=models.BooleanField(default=False)
     
     def __str__(self):
         return f'acNo: {self.accountNo}'

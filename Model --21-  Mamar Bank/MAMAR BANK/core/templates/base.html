@@ -12,12 +12,14 @@
     {% include 'nav.html' %}
     {% block body %}
     <div class="lg:container lg:mx-auto" id="main">
+        {% include 'messages.html' %}
         {% block content %}
        
 
         {% endblock %}
 
     </div>
+    {% include 'footer.html' %}
     {% endblock %}
 </body>
 

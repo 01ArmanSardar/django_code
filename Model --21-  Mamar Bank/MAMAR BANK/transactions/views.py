@@ -63,11 +63,14 @@ class WithdrawMoneyView(TransactionCreateMixin):
     def form_valid(self,form):
         amount=form.cleaned_data.get('amount')
         account=self.request.user.account
-        account.balance-=amount#user er kaceh ache 1500 taka ,ami withdraw korlam 1000 tk taile total balance hocche akhn 500
-        account.save(
-            update_fields=['balance']
-        )
-        messages.warning(self.request,f'{amount} was withdraw to your account')
+        if account.isBankRupt==False:
+            account.balance-=amount#user er kaceh ache 1500 taka ,ami withdraw korlam 1000 tk taile total balance hocche akhn 500
+            account.save(
+                update_fields=['balance']
+                )
+            messages.warning(self.request,f'{amount} was withdraw to your account')
+        else:
+            messages.warning(self.request,f'Bankrupt')
         return super().form_valid(form)
     
 
