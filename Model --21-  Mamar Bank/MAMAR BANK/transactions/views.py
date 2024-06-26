@@ -8,8 +8,20 @@ from .constants import DEPOSIT,WITHDRAWL,LOAN,LOAN_PAID
 from datetime import datetime
 from django.urls import reverse_lazy
 from django.db.models import Sum
+from django.core.mail import EmailMessage,EmailMultiAlternatives
+from django.template.loader import render_to_string
 # Create your views here.
 
+
+def Transaction_mail(user,template,subject,amount):
+        message=render_to_string(template,{
+            'user':user,
+            'amount':amount,
+        })
+        
+        send_email=EmailMultiAlternatives(subject,'',to=[user.email])
+        send_email.attach_alternative(message,'text/html')
+        send_email.send()
 class TransactionCreateMixin(LoginRequiredMixin,CreateView):
     template_name='transaction_form.html'
     model=Transaction
@@ -49,6 +61,18 @@ class DepositMoneyView(TransactionCreateMixin):
             update_fields=['balance']
         )
         messages.success(self.request,f'{amount} was deposited to your account')
+
+        # mail_subject="Deposite Message"
+        # message=render_to_string('deposit_email.html',{
+        #     'user':self.request.user,
+        #     'amount':amount,
+        # })
+        # to_email=self.request.user.email
+        # send_email=EmailMultiAlternatives(mail_subject,'',to=[to_email])
+        # send_email.attach_alternative(message,'text/html')
+        # send_email.send()
+
+        Transaction_mail(self.request.user,'deposit_email.html',"Deposit Message",amount)
         return super().form_valid(form)
     
 
@@ -71,6 +95,7 @@ class WithdrawMoneyView(TransactionCreateMixin):
             messages.warning(self.request,f'{amount} was withdraw to your account')
         else:
             messages.warning(self.request,f'Bankrupt')
+        Transaction_mail(self.request.user,'deposit_email.html',"Withdrawl Message",amount)
         return super().form_valid(form)
     
 
@@ -90,6 +115,8 @@ class LoanRequestView(TransactionCreateMixin):
         if current_loan_count >=3:
             return HttpResponse("you have crossed your limits")
         messages.success(self.request,f'loan request for{amount} was succesfully sent in admin')
+        
+        Transaction_mail(self.request.user,'loan_request_email.html',"Loan Request",amount)
         return super().form_valid(form)
 
 

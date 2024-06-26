@@ -7,10 +7,23 @@ from django.views import View
 from django.contrib.auth.views import LogoutView,LoginView
 # Create your views here.
 
+# class UserRegistrationView(FormView):
+#     template_name='UserRgistration.html'
+#     form_class=UserRegistrationForm
+#     success_url=reverse_lazy('register')
+    
+#     def form_valid(self,form):
+#         user=form.save()
+#         login(self.request,user)
+#         return super().form_valid(form) # form_valid function call hobhe jodi sohb thik thake
+#     def form_invalid(self,form):
+#         print('form invalid')
+#         return super().form_invalid(form)
+
 class UserRegistrationView(FormView):
     template_name='UserRgistration.html'
     form_class=UserRegistrationForm
-    success_url=reverse_lazy('register')
+    success_url=reverse_lazy('login')
     
     def form_valid(self,form):
         user=form.save()
