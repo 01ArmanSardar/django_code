@@ -2,9 +2,10 @@ from django.shortcuts import render,HttpResponse,redirect,get_object_or_404
 from django.views.generic import CreateView,ListView,View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Transaction
-from .forms import DepositForm,WithdrawForm,LoanRequestForm
+from Accounts.models import UserBankAccount
+from .forms import DepositForm,WithdrawForm,LoanRequestForm,SendMoneyForm
 from django.contrib import messages
-from .constants import DEPOSIT,WITHDRAWL,LOAN,LOAN_PAID
+from .constants import DEPOSIT,WITHDRAWL,LOAN,LOAN_PAID,SEND_MONEY
 from datetime import datetime
 from django.urls import reverse_lazy
 from django.db.models import Sum
@@ -22,6 +23,9 @@ def Transaction_mail(user,template,subject,amount):
         send_email=EmailMultiAlternatives(subject,'',to=[user.email])
         send_email.attach_alternative(message,'text/html')
         send_email.send()
+
+
+        
 class TransactionCreateMixin(LoginRequiredMixin,CreateView):
     template_name='transaction_form.html'
     model=Transaction
@@ -76,6 +80,33 @@ class DepositMoneyView(TransactionCreateMixin):
         return super().form_valid(form)
     
 
+class SendMoneyView(TransactionCreateMixin):
+    form_class=SendMoneyForm
+    title="sendMoneyForm"
+    def get_initial(self):
+        inital={'transaction_type':SEND_MONEY}
+        return inital
+    
+    def form_valid(self,form):
+        amount=form.cleaned_data.get('amount')
+        account_no=form.cleaned_data.get('AccountNo')
+
+        #reciver
+        Receiver_Account=UserBankAccount.objects.get(accountNo=account_no)
+        Receiver_Account.balance+=amount
+
+        Receiver_Account.save(
+            update_fields=['balance']
+        )
+        receiver_transaction=Transaction(
+            amount=amount,
+            transaction_type=SEND_MONEY,
+            account=Receiver_Account,
+            balance_after_transaction=Receiver_Account.balance
+        )
+        receiver_transaction.save()
+
+
 class WithdrawMoneyView(TransactionCreateMixin):
     form_class=WithdrawForm
     title="WithdrawForm"
@@ -115,7 +146,7 @@ class LoanRequestView(TransactionCreateMixin):
         if current_loan_count >=3:
             return HttpResponse("you have crossed your limits")
         messages.success(self.request,f'loan request for{amount} was succesfully sent in admin')
-        
+
         Transaction_mail(self.request.user,'loan_request_email.html',"Loan Request",amount)
         return super().form_valid(form)
 

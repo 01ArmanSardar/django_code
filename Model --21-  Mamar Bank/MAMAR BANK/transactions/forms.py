@@ -1,5 +1,11 @@
 from django import forms
 from .models import Transaction
+from Accounts.models import UserBankAccount
+
+class userBankAccountForm(forms.ModelForm):
+    class Meta:
+        model=UserBankAccount
+        fields=['accountNo']
  
 class TransactionForm(forms.ModelForm):
     class Meta:
@@ -54,7 +60,15 @@ class WithdrawForm(TransactionForm):
         
 
 class LoanRequestForm(TransactionForm):
-    def clean_amount(self):
+    def clean_amount(self): #amra jodi form a eshe model er kono aktah field keh filter korteh chai taile seh field er aghe clean keyword tah use krteh hobhe
         Amount=self.cleaned_data.get('amount'
         )
         return Amount
+    
+class SendMoneyForm(TransactionForm):
+    def clean_amount(self):
+        Amount=self.cleaned_data.get('amount')
+        return Amount
+    def clean_accountNo(self):
+        AccountNo=UserBankAccount.cleaned_data.get('accountNo')
+        return AccountNo
