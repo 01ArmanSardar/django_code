@@ -13,7 +13,29 @@ def register(request):
         if register_form.is_valid():
             register_form.save()
             messages.success(request,'account created succesfully')
-        else:
-            register_form=forms.regirtrationForm()
-        return render(request,'register.html',{'Rform':register_form})
+    else:
+        register_form=forms.regirtrationForm()
+    return render(request,'register.html',{'form':register_form,'type':'register'})
+
+
+def userlogin(request):
+    if request.method=='POST':
+        login_form=AuthenticationForm(request,request.POST)
+        if login_form.is_valid():
+            user_name=login_form.cleaned_data['username']
+            user_pass=login_form.cleaned_data['password']
+            user=authenticate(usernam=user_name,password=user_pass)
+            if user is not None:
+                messages.success(request,f'login succesfully')
+                login(request,user)
+                return redirect('homepage')
+            else:
+                messages.info(request,f'sorrry your submited information is incorrect')
+                return redirect('register')
+    else :
+        login_form=AuthenticationForm()
+    return render(request,'register.html',{'form':login_form,'type':'login'})
+
+            
+
         
