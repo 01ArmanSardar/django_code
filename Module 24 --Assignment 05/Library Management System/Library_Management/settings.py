@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Core',
     'crispy_forms',
     'crispy_bootstrap5',
+    'books',
 
 
 ]
