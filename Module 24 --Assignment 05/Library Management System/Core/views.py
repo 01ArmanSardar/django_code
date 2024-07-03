@@ -24,7 +24,7 @@ def userlogin(request):
         if login_form.is_valid():
             user_name=login_form.cleaned_data['username']
             user_pass=login_form.cleaned_data['password']
-            user=authenticate(usernam=user_name,password=user_pass)
+            user=authenticate(username=user_name,password=user_pass)
             if user is not None:
                 messages.success(request,f'login succesfully')
                 login(request,user)
@@ -35,6 +35,10 @@ def userlogin(request):
     else :
         login_form=AuthenticationForm()
     return render(request,'register.html',{'form':login_form,'type':'login'})
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
 
             
 
