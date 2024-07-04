@@ -23,7 +23,7 @@
     </div>
     {% endfor %}
     {% else %}
-    <h1 class="text-danger" style="margin-top: 210px; margin-left: 150px;"><strong>Sorry</strong>  You have No Blog  </h1> <br>
+    {% comment %} <h1 class="text-danger" style="margin-top: 210px; margin-left: 150px;"><strong>Sorry</strong>  You have No Blog  </h1> <br> {% endcomment %}
     {% comment %} <h6 style="margin-top: 250px;">click <a href="{% url 'add_post' %}">Wright Blog</a> for create a blog</h6> {% endcomment %}
     {% endif %}
 </div>
