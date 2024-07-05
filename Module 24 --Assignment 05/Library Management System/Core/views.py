@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from . import forms
 # Create your views here.
 from . import forms
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
@@ -40,6 +41,6 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
-            
-
-        
+def profile(request):
+    data=User.objects.all()
+    return render(request,'profile.html',{'data':data})

@@ -6,5 +6,16 @@ class Category(models.Model):
     slug=models.SlugField(max_length=100,unique=True,null=True,blank=True)
 
 
-    def _str_(self):
-        return self.name
+    def __str__(self):
+        return f'category Name : {self.name}'
+    
+class Books(models.Model):
+    title=models.CharField(max_length=50)
+    content=models.TextField()
+    category=models.ManyToManyField(Category)  
+    image=models.ImageField(upload_to='upload/',blank=True,null=True) 
+    borrowing_price=models.IntegerField()
+    user_reviews=models.TextField()
+
+    def __str__(self):
+        return f'{self.title}'
