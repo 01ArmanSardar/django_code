@@ -41,6 +41,10 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
+# def profile(request):
+#     data=User.objects.all()
+#     return render(request,'profile.html',{'data':data})
+
 def profile(request):
-    data=User.objects.all()
-    return render(request,'profile.html',{'data':data})
+    user=request.user
+    return render(request,'profile.html',{'user':user})

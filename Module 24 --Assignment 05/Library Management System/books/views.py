@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .import forms
 from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
+from . import models
+from django.views.generic.detail import DetailView
 from django.views.generic import TemplateView
 from . models import Books,Category
 
@@ -28,3 +30,27 @@ def add_category(request):
     else:
         CategoryForm=forms.categoryForm()
     return render (request,'add_category.html',{'form_data':CategoryForm})
+
+
+class BlogDetailsView(DetailView):
+    model=models.book
+    template_name='details.html'
+    pk_url_kwarg='id'
+
+    def post(self,request,*args,**kargs):
+        comment_form=form.ComentForm(data=self.request.POST)
+        post=self.get_object()
+        if comment_form.is_valid():
+            new_comment=comment_form.save(commit=False)
+            new_comment.post=post
+            new_comment.save()
+        return self.get(request,*args,**kargs)
+    
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        post = self.object #book model er object ekhnae store korlam
+        comments = book.comments.all()
+        comment_form=form.ComentForm()
+        context['comments'] = comments
+        context['comment_form'] = comment_form
+        return context
