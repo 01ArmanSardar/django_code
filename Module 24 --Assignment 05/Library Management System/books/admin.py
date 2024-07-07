@@ -8,3 +8,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Category,CategoryAdmin)
 admin.site.register(models.Books)
+admin.site.register(models.Comment)

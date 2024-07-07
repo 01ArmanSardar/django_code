@@ -19,3 +19,14 @@ class Books(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+    
+
+class Comment(models.Model):
+    book=models.ForeignKey(Books,on_delete=models.CASCADE,related_name='comments')
+    name=models.CharField(max_length=30)
+    email=models.EmailField()
+    content=models.TextField()
+    date=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.name}'

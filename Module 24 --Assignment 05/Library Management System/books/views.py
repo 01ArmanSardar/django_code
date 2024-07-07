@@ -32,25 +32,32 @@ def add_category(request):
     return render (request,'add_category.html',{'form_data':CategoryForm})
 
 
-class BlogDetailsView(DetailView):
-    model=models.book
+class bookDetailsView(DetailView):
+    model=models.Books
     template_name='details.html'
     pk_url_kwarg='id'
 
-    def post(self,request,*args,**kargs):
-        comment_form=form.ComentForm(data=self.request.POST)
-        post=self.get_object()
+    def book(self,request,*args,**kargs):
+        comment_form=forms.ComentForm(data=self.request.POST)
+        book=self.get_object()
         if comment_form.is_valid():
             new_comment=comment_form.save(commit=False)
-            new_comment.post=post
+            new_comment.book=book
             new_comment.save()
         return self.get(request,*args,**kargs)
     
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
-        post = self.object #book model er object ekhnae store korlam
-        comments = book.comments.all()
-        comment_form=form.ComentForm()
+        books = self.object #book model er object ekhnae store korlam
+        comments = books.comments.all()
+        # if self.request.method == 'POST':
+        #     comment_form=forms.ComentForm(data=self.request.POST)
+        #     if comment_form.is_valid():
+        #         new_comment=comment_form.save(commit=False)
+        #         new_comment.books=books
+        #         new_comment.save()
+        # comment_form=forms.ComentForm()
+        comment_form=forms.ComentForm()
         context['comments'] = comments
         context['comment_form'] = comment_form
         return context

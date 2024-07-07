@@ -39,7 +39,7 @@
             </p>
             <h6>borrowing_price: {{post.borrowing_price}}</h6>
             <p>review: {{post.user_reviews}}</p>
-            <a class="btn btn-info" type="button">Details</a>
+            <a class="btn btn-info" type="button" href="{% url 'details' post.id %}">Details</a>
 
           </div>
         </div>
