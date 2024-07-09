@@ -3,7 +3,7 @@ from .models import Transaction
 class DepositForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ['amount',]
+        fields = ['amount','account']
 
     def __init__(self, *args, **kwargs):
         self.account = kwargs.pop('account')
