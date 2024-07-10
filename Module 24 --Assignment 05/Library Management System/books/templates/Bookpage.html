@@ -32,7 +32,7 @@
             <img src="{{post.image.url}}" class="card-img-top" alt="image">
             <h5 class="card-title"><a 
                 style="text-decoration: none ;color: black;">title: {{post.title}}</a></h5>
-            <p class="card-text">description: {{post.content | truncatewords:10}}</p>
+            <p class="card-text">description: {{post.content | truncatechars:15}}</p>
             <p> {% for cat in post.category.all %}
               <button class="btn btn-primary btn-sm m-2" disabled> {{cat.name}}</button>
               {% endfor %}

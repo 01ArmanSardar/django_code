@@ -5,12 +5,15 @@
     <div class="card m-2">
         <div class="card-body">
             <img src="{{books.image.url}}" class="card-img-top" alt="image" style="width:20%;">
-            <h1 class="card-title">{{books.title}}</h1>
-            <p class="card-text">{{books.content}}</p>
+            <h1 class="card-title">title: {{books.title}}</h1>
+            <p class="card-text">content: {{books.content}}</p>
+            <h4>borrow Price: {{books.borrowing_price}}</h4>
             <p>Category: {% for cat in books.category.all %}
                 <button class="btn btn-primary btn-sm m-2" disabled>{{cat.name}}</button>
                 {% endfor %}
             </p>
+            <a class="btn btn-dark" href="">borrow</a>
+            
 
 
         </div>

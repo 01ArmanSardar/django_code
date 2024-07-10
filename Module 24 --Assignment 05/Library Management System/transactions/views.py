@@ -14,7 +14,7 @@ from Core.models import Account
 
 
 class DepositMoneyView(LoginRequiredMixin, CreateView):
-    model = Account
+    model = Transaction
     form_class = DepositForm
     template_name = 'deposit.html'
     success_url = reverse_lazy('homepage')
@@ -34,6 +34,7 @@ class DepositMoneyView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         amount = form.cleaned_data.get('amount')
         print('check deposit')
+        print(amount)
         Account = self.request.user.account
         Account.balance += amount  # Update the account balance
         Account.save(update_fields=['balance'])

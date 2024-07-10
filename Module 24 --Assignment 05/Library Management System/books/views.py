@@ -37,7 +37,7 @@ class bookDetailsView(DetailView):
     template_name='details.html'
     pk_url_kwarg='id'
 
-    def book(self,request,*args,**kargs):
+    def post(self,request,*args,**kargs):
         comment_form=forms.ComentForm(data=self.request.POST)
         book=self.get_object()
         if comment_form.is_valid():
@@ -61,3 +61,16 @@ class bookDetailsView(DetailView):
         context['comments'] = comments
         context['comment_form'] = comment_form
         return context
+    
+# def BorrowBook(request):
+#     book_ids=request.GET.get('books_id')
+#     book=get_object_or_404(Books,id=book_ids)
+#     # print(book)
+
+#     # borrowPrice=Books.borrowing_price
+#     crntuserBalance=request.user.account.balance
+#     print(crntuserBalance)
+#     crntuserBalance-=book.borrowing_price
+#     request.user.account.balance = crntuserBalance
+#     request.user.account.save()
+#     return render(request,'details.html')
