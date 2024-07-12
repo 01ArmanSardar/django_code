@@ -1,46 +1,77 @@
 from django.shortcuts import render,HttpResponse,redirect,get_object_or_404
-from django.views.generic import CreateView,ListView,View
+from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Transaction
 from .forms import DepositForm
 from django.contrib import messages
-from datetime import datetime
 from django.urls import reverse_lazy
 from django.db.models import Sum
 from django.core.mail import EmailMessage,EmailMultiAlternatives
 from django.template.loader import render_to_string
-from Core.models import Account
 # Create your views here.
 
 
-class DepositMoneyView(LoginRequiredMixin, CreateView):
-    model = Transaction
-    form_class = DepositForm
-    template_name = 'deposit.html'
-    success_url = reverse_lazy('homepage')
+# def Transaction_mail(user,template,subject,amount):
+#         message=render_to_string(template,{
+#             'user':user,
+#             'amount':amount,
+#         })
+        
+#         send_email=EmailMultiAlternatives(subject,'',to=[user.email])
+#         send_email.attach_alternative(message,'text/html')
+#         send_email.send()
 
+
+        
+class TransactionCreateMixin(LoginRequiredMixin,CreateView):
+    template_name='transaction_form.html'
+    model=Transaction
+    # title=''
+    success_url=reverse_lazy('homepage')
 
     def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        print('some')
+        kwargs=super().get_form_kwargs()
         kwargs.update(
             {
-                'account': self.request.user.account,
+                'acount':self.request.user.account,
             }
         )
-        print(self.request.user.account)
         return kwargs
+    # def get_context_data(self,**kwargs):
+    #     context=super().get_context_data(**kwargs)
+    #     context.update(
+    #         {
+    #           'title'  :self.title
+    #         }
+    #     )
+    #     return context
+
+class DepositMoneyView(TransactionCreateMixin):
+    form_class=DepositForm
+    # title="Deposit"
+
+    # def get_initial(self):
+    #     inital={'transaction_type':DEPOSIT}
+    #     return inital
     
-    def form_valid(self, form):
-        amount = form.cleaned_data.get('amount')
-        print('check deposit')
-        print(amount)
-        Account = self.request.user.account
-        Account.balance += amount  # Update the account balance
-        Account.save(update_fields=['balance'])
-        messages.success(self.request, f'{amount} was deposited to your account')
+    def form_valid(self,form):
+        amount=form.cleaned_data.get('amount')
+        account=self.request.user.account
+        account.balance+=amount#user er kaceh ache 500 taka ,ami deposit korlam 1000 tk taile total balance hocche 1500
+        account.save(
+            update_fields=['balance']
+        )
+        messages.success(self.request,f'{amount} was deposited to your account')
 
-        # Send transaction email
-        # Transaction_mail(self.request.user, 'deposit_email.html', "Deposit Message", amount)
+        # mail_subject="Deposite Message"
+        # message=render_to_string('deposit_email.html',{
+        #     'user':self.request.user,
+        #     'amount':amount,
+        # })
+        # to_email=self.request.user.email
+        # send_email=EmailMultiAlternatives(mail_subject,'',to=[to_email])
+        # send_email.attach_alternative(message,'text/html')
+        # send_email.send()
 
-        return super().form_valid(form)
+        # Transaction_mail(self.request.user,'deposit_email.html',"Deposit Message",amount)
+        # return super().form_valid(form)

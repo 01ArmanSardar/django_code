@@ -1,10 +1,11 @@
-from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.models import User
+# Create your models here.
 
-class Account(models.Model):
-    
-    user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='account')
-    balance = models.DecimalField(max_digits=10, decimal_places=3, default=0.00)
+class UserBankAccount(models.Model):
+    user=models.OneToOneField(User,related_name='account',on_delete=models.CASCADE)
+    accountNo=models.IntegerField(unique=True,null=True)
+    balance=models.DecimalField(default=0,max_digits=10,decimal_places=2)
 
     def __str__(self):
-        return f"{self.user.username}'s Account"
+        return f'acNo: {self.accountNo}'
