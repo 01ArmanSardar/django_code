@@ -34,10 +34,11 @@
             <a class="btn btn-primary" href="{% url 'logout' %}" >logout</a>
             <a class="btn btn-primary" href="{% url 'profile' %}">Profile</a>
             <a class="btn btn-dark" href="{% url 'deposit' %}">deposit</a>
-            <a class="btn btn-success" href="#">balance</a>
+            {% comment %} <a class="btn btn-success" href="#">balance</a> {% endcomment %}
+            {% comment %} <a class="btn btn-success" href="{% url 'account' %}">create bank account</a> {% endcomment %}
             
             {% else %}
-            <a class="btn btn-primary" href="{% url 'register' %}" >Register</a>
+            <a class="btn btn-primary" href="{% url 'accountANDregister' %}" >Register</a>
             <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
             {% endif %}
           </div>

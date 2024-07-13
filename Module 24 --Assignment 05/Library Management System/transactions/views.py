@@ -11,15 +11,15 @@ from django.template.loader import render_to_string
 # Create your views here.
 
 
-# def Transaction_mail(user,template,subject,amount):
-#         message=render_to_string(template,{
-#             'user':user,
-#             'amount':amount,
-#         })
+def Transaction_mail(user,template,subject,amount):
+        message=render_to_string(template,{
+            'user':user,
+            'amount':amount,
+        })
         
-#         send_email=EmailMultiAlternatives(subject,'',to=[user.email])
-#         send_email.attach_alternative(message,'text/html')
-#         send_email.send()
+        send_email=EmailMultiAlternatives(subject,'',to=[user.email])
+        send_email.attach_alternative(message,'text/html')
+        send_email.send()
 
 
         
@@ -48,11 +48,7 @@ class TransactionCreateMixin(LoginRequiredMixin,CreateView):
 
 class DepositMoneyView(TransactionCreateMixin):
     form_class=DepositForm
-    # title="Deposit"
 
-    # def get_initial(self):
-    #     inital={'transaction_type':DEPOSIT}
-    #     return inital
     
     def form_valid(self,form):
         amount=form.cleaned_data.get('amount')
@@ -73,5 +69,5 @@ class DepositMoneyView(TransactionCreateMixin):
         # send_email.attach_alternative(message,'text/html')
         # send_email.send()
 
-        # Transaction_mail(self.request.user,'deposit_email.html',"Deposit Message",amount)
-        # return super().form_valid(form)
+        Transaction_mail(self.request.user,'deposit_email.html',"Deposit Message",amount)
+        return super().form_valid(form)

@@ -1,7 +1,9 @@
 from django.shortcuts import render,redirect
 from . import forms
+from django.views.generic import FormView
 # Create your views here.
 from . import forms
+from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -48,3 +50,15 @@ def user_logout(request):
 def profile(request):
     user=request.user
     return render(request,'profile.html',{'user':user})
+
+
+class UserAccountRegistrationView(FormView):
+    template_name='accountRegister.html'
+    form_class=forms.UserAccountRegistrationForm
+    success_url=reverse_lazy('homepage')
+    
+    def form_valid(self,form):
+        print('in account form valid')
+        user=form.save()
+        login(self.request,user)
+        return super().form_valid(form) # form_valid function call hobhe jodi sohb thik thake
