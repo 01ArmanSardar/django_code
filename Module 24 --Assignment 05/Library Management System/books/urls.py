@@ -6,6 +6,6 @@ urlpatterns = [
     path('Books/',views.book,name='books'),
     path('category/<slug:category_slug>',views.book,name='category_wise_book'),
     path('details/<int:id>',views.bookDetailsView.as_view(),name='details'),
-    # path('borrow/',views.BorrowBook,name="borrow")
+    path('borrow/<int:id>',views.Borrowed_Book,name="borrow")
     
 ]

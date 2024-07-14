@@ -71,3 +71,6 @@ class DepositMoneyView(TransactionCreateMixin):
 
         Transaction_mail(self.request.user,'deposit_email.html',"Deposit Message",amount)
         return super().form_valid(form)
+    
+
+     

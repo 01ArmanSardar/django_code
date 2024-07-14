@@ -3,9 +3,12 @@ from .import forms
 from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
 from . import models
+from django.urls import reverse
+from django.contrib import messages
 from django.views.generic.detail import DetailView
 from django.views.generic import TemplateView
 from . models import Books,Category
+from .models import BorrowedBook
 
 def book(request,category_slug=None):
     data= Books.objects.all()
@@ -62,15 +65,39 @@ class bookDetailsView(DetailView):
         context['comment_form'] = comment_form
         return context
     
-# def BorrowBook(request):
-#     book_ids=request.GET.get('books_id')
-#     book=get_object_or_404(Books,id=book_ids)
+# def BorrowBook(request,pk):
+#     books = get_object_or_404(Books, pk=pk)
 #     # print(book)
-
 #     # borrowPrice=Books.borrowing_price
 #     crntuserBalance=request.user.account.balance
 #     print(crntuserBalance)
-#     crntuserBalance-=book.borrowing_price
+#     print(crntuserBalance)
+#     crntuserBalance-=books.borrowing_price
 #     request.user.account.balance = crntuserBalance
 #     request.user.account.save()
 #     return render(request,'details.html')
+
+
+def Borrowed_Book(request, id):
+    book = get_object_or_404(Books, pk=id)
+
+    user_balance = int(request.user.account.balance)
+    borrowing_price = int(book.borrowing_price)
+
+    if user_balance >= borrowing_price:
+        BorrowedBook.objects.create(user=request.user, book=book)
+        request.user.account.balance -= borrowing_price
+        request.user.account.save()
+        messages.success(
+            request,
+            f'{"{:,.2f}".format(float(borrowing_price))}$ is borrowed book successfully'
+            )
+
+        # send_transaction_email(request.user, borrowing_price, "Borrowed Book Message", "borrowed_book_email.html")
+    else:
+        messages.success(
+            request,
+            f'{"{:,.2f}".format(float(borrowing_price))}$ Borrowing price is more than your account balance. Please deposit more'
+            )
+
+    return redirect(reverse("book_details", args=[book.id]))

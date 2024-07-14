@@ -1,5 +1,6 @@
 from django.db import models
-
+from Core.models import UserBankAccount
+from django.utils import timezone
 # Create your models here.
 class Category(models.Model):
     name=models.CharField(max_length=100)
@@ -30,3 +31,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+    
+class BorrowedBook(models.Model):
+    book = models.ForeignKey(Books, on_delete=models.CASCADE, related_name='books')
+    user = models.ForeignKey(UserBankAccount, on_delete=models.CASCADE, related_name='users')
+    created_on = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['created_on']
+
+    def __str__(self) :
+        return self.book.title
