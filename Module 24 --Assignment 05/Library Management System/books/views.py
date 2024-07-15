@@ -3,6 +3,9 @@ from .import forms
 from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
 from . import models
+from django.views.generic import View
+from django.utils import timezone
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.contrib import messages
 from django.views.generic.detail import DetailView
@@ -78,26 +81,43 @@ class bookDetailsView(DetailView):
 #     return render(request,'details.html')
 
 
-def Borrowed_Book(request, id):
-    book = get_object_or_404(Books, pk=id)
+# def Borrowed_Book(request, id):
+#     book = get_object_or_404(Books, pk=id)
 
-    user_balance = int(request.user.account.balance)
-    borrowing_price = int(book.borrowing_price)
+#     user_balance = int(request.user.account.balance)
+#     borrowing_price = int(book.borrowing_price)
 
-    if user_balance >= borrowing_price:
-        BorrowedBook.objects.create(user=request.user, book=book)
-        request.user.account.balance -= borrowing_price
-        request.user.account.save()
-        messages.success(
-            request,
-            f'{"{:,.2f}".format(float(borrowing_price))}$ is borrowed book successfully'
+#     if user_balance >= borrowing_price:
+#         BorrowedBook.objects.create(user=request.user, book=book)
+#         request.user.account.balance -= borrowing_price
+#         request.user.account.save()
+#         messages.success(
+#             request,
+#             f'{"{:,.2f}".format(float(borrowing_price))}$ is borrowed book successfully'
+#             )
+
+#         # send_transaction_email(request.user, borrowing_price, "Borrowed Book Message", "borrowed_book_email.html")
+#     else:
+#         messages.success(
+#             request,
+#             f'{"{:,.2f}".format(float(borrowing_price))}$ Borrowing price is more than your account balance. Please deposit more'
+#             )
+
+#     return redirect(reverse("book_details", args=[book.id]))
+
+class BookBorrowView(LoginRequiredMixin,View):
+    def get(self,request,id, **kwargs):
+        book = get_object_or_404(Books, id = id)
+        user = self.request.user
+        if user.account.balance > book.borrowed_price:
+            user.account.balance -= book.borrowed_price
+            messages.success(request, 'book borrowed successful')
+            user.account.save(update_fields=['balance'])
+            BorrowedBook.objects.create(
+                book = book,
+                user = request.user.account,
+                created_on=timezone.now(),
             )
-
-        # send_transaction_email(request.user, borrowing_price, "Borrowed Book Message", "borrowed_book_email.html")
-    else:
-        messages.success(
-            request,
-            f'{"{:,.2f}".format(float(borrowing_price))}$ Borrowing price is more than your account balance. Please deposit more'
-            )
-
-    return redirect(reverse("book_details", args=[book.id]))
+        else:
+            messages.error(request, 'low balance to borrow the book')
+            return redirect('homepage')
